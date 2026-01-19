@@ -1,1 +1,138 @@
+---
+/**
+ * Min side – statisk placeholder
+ * Ingen innlogging, ingen backend.
+ * Kun struktur og forventningsavklaring.
+ */
+const brand = "HjemTrygg";
+---
+
+<html lang="no">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Min side – {brand}</title>
+    <meta
+      name="description"
+      content="Min side er portalen der du samler beredskapsplan, nødkontakter og oppgaver for husholdningen."
+    />
+    <style>
+      :root{
+        --bg:#0b1220;
+        --card:rgba(255,255,255,.06);
+        --line:rgba(255,255,255,.14);
+        --text:rgba(255,255,255,.92);
+        --muted:rgba(255,255,255,.72);
+        --accent:#7dd3fc;
+        --radius:16px;
+      }
+      *{box-sizing:border-box}
+      body{
+        margin:0;
+        font-family:ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial;
+        background:var(--bg);
+        color:var(--text);
+      }
+      a{color:inherit;text-decoration:none}
+      .wrap{max-width:900px;margin:0 auto;padding:32px 18px 64px}
+      header{
+        border:1px solid var(--line);
+        background:rgba(0,0,0,.18);
+        padding:14px 16px;
+        border-radius:var(--radius);
+        margin-bottom:18px;
+      }
+      .brand{font-weight:800}
+      .card{
+        border:1px solid var(--line);
+        background:var(--card);
+        border-radius:var(--radius);
+        padding:18px;
+        margin-bottom:14px;
+      }
+      h1{margin:0 0 8px;font-size:28px}
+      h2{margin:0 0 8px;font-size:20px}
+      p{margin:0 0 10px;color:var(--muted);line-height:1.55}
+      ul{margin:8px 0 0;padding-left:18px;color:var(--muted)}
+      li{margin:6px 0}
+      .btn{
+        display:inline-block;
+        padding:10px 14px;
+        border-radius:12px;
+        border:1px solid var(--line);
+        background:rgba(255,255,255,.05);
+        font-weight:600;
+        margin-right:8px;
+      }
+      .btn.primary{
+        border-color:rgba(125,211,252,.5);
+        background:rgba(125,211,252,.18);
+      }
+      .note{
+        font-size:13px;
+        color:var(--muted);
+        border-top:1px dashed var(--line);
+        padding-top:10px;
+        margin-top:12px;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="wrap">
+      <header>
+        <div class="brand">HjemTrygg</div>
+        <div class="muted" style="font-size:13px;">Min side – digital beredskapsportal</div>
+      </header>
+
+      <main>
+        <section class="card">
+          <h1>Min side</h1>
+          <p>
+            Min side er stedet der du samler alt som handler om beredskap for
+            husholdningen din. Målet er at du raskt skal få oversikt, og vite
+            hva du skal gjøre når noe skjer.
+          </p>
+        </section>
+
+        <section class="card">
+          <h2>Dette vil du gjøre her</h2>
+          <ul>
+            <li>Se og oppdatere husstandens beredskapsplan</li>
+            <li>Lagre nødkontakter, møtepunkt og viktige nummer</li>
+            <li>Fordele ansvar: hvem gjør hva ved ulike hendelser</li>
+            <li>Få påminnelser og små oppgaver gjennom året</li>
+          </ul>
+        </section>
+
+        <section class="card">
+          <h2>Slik er tanken at det skal fungere</h2>
+          <p>
+            Du bruker 5–10 minutter første gang for å sette opp planen.
+            Deretter holder du den oppdatert med små justeringer,
+            i stedet for skippertak.
+          </p>
+        </section>
+
+        <section class="card">
+          <h2>Status akkurat nå</h2>
+          <p>
+            Denne siden er en forhåndsvisning. Innlogging, lagring og personlige
+            data kommer når abonnement og portal lanseres.
+          </p>
+
+          <div>
+            <a class="btn primary" href="/">Tilbake til forsiden</a>
+            <a class="btn" href="#abonnement">Se abonnement</a>
+          </div>
+
+          <div class="note">
+            Poeng: Min side er kjernen i HjemTrygg. Produkter og annet innhold
+            er kun ment å støtte planen – ikke erstatte den.
+          </div>
+        </section>
+      </main>
+    </div>
+  </body>
+</html>
 
