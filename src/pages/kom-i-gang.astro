@@ -1,1 +1,156 @@
+---
+/**
+ * Kom i gang – forventningsavklaring
+ * Ingen betaling. Ingen innlogging.
+ * Kun ro, kontroll og tillit.
+ */
+const brand = "HjemTrygg";
+---
+
+<html lang="no">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Kom i gang – {brand}</title>
+    <meta
+      name="description"
+      content="Slik fungerer det å komme i gang med HjemTrygg. Rolig oppstart, ingen mas og full kontroll."
+    />
+    <style>
+      :root{
+        --bg:#0b1220;
+        --card:rgba(255,255,255,.06);
+        --line:rgba(255,255,255,.14);
+        --text:rgba(255,255,255,.92);
+        --muted:rgba(255,255,255,.72);
+        --accent:#7dd3fc;
+        --radius:16px;
+      }
+      *{box-sizing:border-box}
+      body{
+        margin:0;
+        font-family:ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial;
+        background:var(--bg);
+        color:var(--text);
+      }
+      a{color:inherit;text-decoration:none}
+      .wrap{max-width:900px;margin:0 auto;padding:32px 18px 64px}
+      header{
+        border:1px solid var(--line);
+        background:rgba(0,0,0,.18);
+        padding:14px 16px;
+        border-radius:var(--radius);
+        margin-bottom:18px;
+      }
+      .brand{font-weight:800}
+      .card{
+        border:1px solid var(--line);
+        background:var(--card);
+        border-radius:var(--radius);
+        padding:18px;
+        margin-bottom:14px;
+      }
+      h1{margin:0 0 8px;font-size:28px}
+      h2{margin:0 0 8px;font-size:20px}
+      p{margin:0 0 10px;color:var(--muted);line-height:1.55}
+      ul{margin:8px 0 0;padding-left:18px;color:var(--muted)}
+      li{margin:6px 0}
+      .btn{
+        display:inline-block;
+        padding:10px 14px;
+        border-radius:12px;
+        border:1px solid var(--line);
+        background:rgba(255,255,255,.05);
+        font-weight:600;
+        margin-right:8px;
+      }
+      .btn.primary{
+        border-color:rgba(125,211,252,.5);
+        background:rgba(125,211,252,.18);
+      }
+      .note{
+        font-size:13px;
+        color:var(--muted);
+        border-top:1px dashed var(--line);
+        padding-top:10px;
+        margin-top:12px;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="wrap">
+      <header>
+        <div class="brand">HjemTrygg</div>
+        <div class="muted" style="font-size:13px;">Kom i gang – i ditt tempo</div>
+      </header>
+
+      <main>
+        <section class="card">
+          <h1>Kom i gang</h1>
+          <p>
+            Å komme i gang med HjemTrygg er ment å være enkelt og rolig.
+            Dette er ikke en app som krever oppmerksomhet, men et stille
+            sikkerhetsnett du setter opp én gang og har i bakgrunnen.
+          </p>
+        </section>
+
+        <section class="card">
+          <h2>Hva som skjer først</h2>
+          <p>
+            Når du starter, bruker du noen få minutter på å få oversikt.
+            Du trenger ikke gjøre alt på én gang.
+          </p>
+          <ul>
+            <li>Velg bolig og eventuelt hytte</li>
+            <li>Legg inn noen få nødkontakter</li>
+            <li>Få en ferdig beredskapsplan tilpasset deg</li>
+          </ul>
+        </section>
+
+        <section class="card">
+          <h2>Hva som ikke skjer</h2>
+          <p>
+            Det er like viktig å vite hva HjemTrygg <em>ikke</em> gjør.
+          </p>
+          <ul>
+            <li>Ingen varsler uten at du har bedt om det</li>
+            <li>Ingen krav om jevnlig bruk</li>
+            <li>Ingen pågående meldinger eller mas</li>
+          </ul>
+        </section>
+
+        <section class="card">
+          <h2>Et stille abonnement</h2>
+          <p>
+            HjemTrygg er laget for å være stille som standard.
+            Hvis du ikke hører noe, betyr det at alt er i orden.
+          </p>
+          <p>
+            Du bestemmer selv om og når du vil ha påminnelser, og hva de i så fall
+            skal handle om.
+          </p>
+        </section>
+
+        <section class="card">
+          <h2>Klar når du er klar</h2>
+          <p>
+            Du kan starte i dag og gjøre resten senere.
+            Planen er der når du trenger den – også om det er lenge siden sist.
+          </p>
+
+          <div>
+            <a class="btn primary" href="/">Tilbake til forsiden</a>
+            <a class="btn" href="/min-side">Se Min side</a>
+          </div>
+
+          <div class="note">
+            Betaling og abonnement aktiveres i et eget steg.
+            Du får alltid tydelig informasjon før noe belastes.
+          </div>
+        </section>
+      </main>
+    </div>
+  </body>
+</html>
 
