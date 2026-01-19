@@ -1,1 +1,141 @@
+---
+const brand = "HjemTrygg";
+
+const plans = [
+  {
+    name: "Basis",
+    price: "99 kr/mnd",
+    who: "For deg som vil ha kjernen på plass, uten støy.",
+    bullets: [
+      "Beredskapsplan med «gjør dette nå»",
+      "Nødkontakter og møtepunkt",
+      "Min side som samler det viktigste",
+    ],
+    cta: "Velg Basis",
+    href: "/kom-i-gang?plan=Basis",
+  },
+  {
+    name: "Pluss",
+    price: "149 kr/mnd",
+    featured: true,
+    who: "For deg som vil gjøre planen praktisk i stress.",
+    bullets: [
+      "Alt i Basis",
+      "Rollefordeling: hvem gjør hva",
+      "Utvidet scenarioguide",
+    ],
+    cta: "Velg Pluss",
+    href: "/kom-i-gang?plan=Pluss",
+  },
+  {
+    name: "Familie",
+    price: "199 kr/mnd",
+    who: "For deg med flere steder og behov for deling.",
+    bullets: [
+      "Alt i Pluss",
+      "Oppgaver og påminnelser gjennom året",
+      "Flere husstander (bolig + hytte)",
+      "Deling med familie (lesetilgang)",
+    ],
+    cta: "Velg Familie",
+    href: "/kom-i-gang?plan=Familie",
+  },
+];
+---
+
+<html lang="no">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Abonnement – {brand}</title>
+    <meta name="description" content="Velg abonnement i HjemTrygg. Stille assistent: tilgjengelig når du trenger det, ellers i fred." />
+    <style>
+      :root{
+        --bg:#0b1220;
+        --card:rgba(255,255,255,.06);
+        --line:rgba(255,255,255,.14);
+        --text:rgba(255,255,255,.92);
+        --muted:rgba(255,255,255,.72);
+        --accent:#7dd3fc;
+        --radius:16px;
+      }
+      *{box-sizing:border-box}
+      body{margin:0;font-family:ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial;background:var(--bg);color:var(--text)}
+      a{color:inherit;text-decoration:none}
+      .wrap{max-width:980px;margin:0 auto;padding:32px 18px 64px}
+      header{border:1px solid var(--line);background:rgba(0,0,0,.18);padding:14px 16px;border-radius:var(--radius);margin-bottom:18px}
+      .brand{font-weight:800}
+      .muted{color:var(--muted)}
+      .card{border:1px solid var(--line);background:var(--card);border-radius:var(--radius);padding:18px;margin-bottom:14px}
+      h1{margin:0 0 8px;font-size:28px}
+      h2{margin:0 0 8px;font-size:20px}
+      p{margin:0 0 10px;color:var(--muted);line-height:1.55}
+      ul{margin:8px 0 0;padding-left:18px;color:var(--muted)}
+      li{margin:6px 0}
+      .btn{display:inline-block;padding:10px 14px;border-radius:12px;border:1px solid var(--line);background:rgba(255,255,255,.05);font-weight:600}
+      .btn.primary{border-color:rgba(125,211,252,.5);background:rgba(125,211,252,.18)}
+      .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+      @media (max-width: 900px){ .grid{grid-template-columns:1fr;} }
+      .plan{border:1px solid var(--line);background:var(--card);border-radius:var(--radius);padding:16px}
+      .plan.featured{border-color:rgba(125,211,252,.35);background:rgba(125,211,252,.10)}
+      .price{font-size:26px;margin:0 0 10px;letter-spacing:-0.02em}
+      .badge{display:inline-block;font-size:12px;padding:6px 10px;border-radius:999px;border:1px solid rgba(125,211,252,.35);background:rgba(125,211,252,.10);margin-bottom:10px}
+      .note{font-size:13px;color:var(--muted);border-top:1px dashed var(--line);padding-top:10px;margin-top:12px}
+    </style>
+  </head>
+
+  <body>
+    <div class="wrap">
+      <header>
+        <div class="brand">{brand}</div>
+        <div class="muted" style="font-size:13px;">Abonnement – stille assistent, ikke mas</div>
+      </header>
+
+      <main>
+        <section class="card">
+          <h1>Velg abonnement</h1>
+          <p>
+            HjemTrygg er laget for å være stille som standard. Du setter opp det viktigste,
+            og har et sikkerhetsnett som er der når du trenger det.
+          </p>
+          <p class="muted">
+            Enkelt forklart: Basis gir deg kjernen. Pluss gjør planen praktisk i stress. Familie holder alt oppdatert over tid og på tvers av hjem.
+          </p>
+        </section>
+
+        <section class="grid" aria-label="Abonnementsplaner">
+          {plans.map((p) => (
+            <div class={`plan ${p.featured ? "featured" : ""}`}>
+              {p.featured ? <div class="badge">Mest valgt</div> : null}
+              <h2>{p.name}</h2>
+              <div class="price">{p.price}</div>
+              <p class="muted">{p.who}</p>
+              <ul>
+                {p.bullets.map((b) => <li>{b}</li>)}
+              </ul>
+              <div style="margin-top:12px;">
+                <a class={`btn ${p.featured ? "primary" : ""}`} href={p.href}>{p.cta}</a>
+              </div>
+            </div>
+          ))}
+        </section>
+
+        <section class="card" style="margin-top:14px;">
+          <h2>Trygg start</h2>
+          <p>
+            Du kan komme i gang på 5–10 minutter. Du trenger ikke gjøre alt på én gang.
+            Og du får ingen varsler uten at du har bedt om det.
+          </p>
+          <div>
+            <a class="btn primary" href="/kom-i-gang">Kom i gang</a>
+            <a class="btn" href="/">Tilbake til forsiden</a>
+          </div>
+          <div class="note">
+            Betaling og tilgang settes opp i neste runde. Nå bygger vi flyten og forventningene riktig først.
+          </div>
+        </section>
+      </main>
+    </div>
+  </body>
+</html>
 
