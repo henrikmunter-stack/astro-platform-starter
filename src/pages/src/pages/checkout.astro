@@ -1,1 +1,34 @@
+---
+const plan = Astro.url.searchParams.get("plan") ?? "Pluss";
+---
+
+<html lang="no">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Sender deg til betaling…</title>
+  </head>
+  <body>
+    <main style="max-width:720px;margin:60px auto;font-family:system-ui;">
+      <h1>Sender deg til betaling…</h1>
+      <p>Plan: <b>{plan}</b></p>
+
+      <script>
+        (async () => {
+          const plan = new URLSearchParams(window.location.search).get("plan") || "Pluss";
+          const res = await fetch(`/.netlify/functions/create-checkout-session?plan=${encodeURIComponent(plan)}`);
+          if (!res.ok) {
+            document.body.innerHTML =
+              "<main style='max-width:720px;margin:60px auto;font-family:system-ui;'>" +
+              "<h1>Noe gikk galt</h1><p>Kunne ikke starte betaling.</p>" +
+              "<p><a href='/abonnement'>Tilbake</a></p></main>";
+            return;
+          }
+          const data = await res.json();
+          if (data.url) window.location.href = data.url;
+        })();
+      </script>
+    </main>
+  </body>
+</html>
 
