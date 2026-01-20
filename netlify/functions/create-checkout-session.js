@@ -20,6 +20,14 @@ export default async (req, context) => {
     };
 
     const priceId = priceMap[plan];
+    return new Response(
+  JSON.stringify({
+    plan,
+    priceId,
+    keyPrefix: (process.env.STRIPE_SECRET_KEY || "").slice(0, 8),
+  }),
+  { status: 200, headers: { "content-type": "application/json" } }
+);
     if (!priceId) {
       return new Response(JSON.stringify({ error: `Unknown plan: ${plan}` }), {
         status: 400,
