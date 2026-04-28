@@ -34,7 +34,7 @@ export function Testimonials() {
               key={i}
               className="bg-white rounded-lg border border-[#e5e9ec] p-6 shadow-sm"
             >
-              <div className="text-[#2E86AB] text-3xl font-serif mb-3" aria-hidden="true">"</div>
+              <div className="text-[#2E86AB] text-3xl font-serif mb-3" aria-hidden="true">&ldquo;</div>
               <p className="text-[#1C2833] text-sm leading-relaxed mb-4">{t.quote}</p>
               <footer>
                 <cite className="not-italic">

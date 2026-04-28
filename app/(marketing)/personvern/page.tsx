@@ -73,7 +73,7 @@ export default function PersonvernPage() {
             <ul className="space-y-2 text-sm text-[#5d6b7a]">
               <li><strong className="text-[#1C2833]">Innsyn:</strong> Du kan be om en kopi av alle personopplysninger vi har om deg</li>
               <li><strong className="text-[#1C2833]">Retting:</strong> Du kan korrigere feilaktige opplysninger</li>
-              <li><strong className="text-[#1C2833]">Sletting:</strong> Du kan be om sletting av dine data ("retten til å bli glemt")</li>
+              <li><strong className="text-[#1C2833]">Sletting:</strong> Du kan be om sletting av dine data (&quot;retten til å bli glemt&quot;)</li>
               <li><strong className="text-[#1C2833]">Dataportabilitet:</strong> Du kan laste ned alle dine data i maskinlesbart format (JSON) fra innstillinger</li>
               <li><strong className="text-[#1C2833]">Innsigelse:</strong> Du kan protestere mot behandling basert på berettigede interesser</li>
               <li><strong className="text-[#1C2833]">Klage:</strong> Du kan klage til Datatilsynet (datatilsynet.no)</li>

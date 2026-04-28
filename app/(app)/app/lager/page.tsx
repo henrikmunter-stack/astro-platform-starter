@@ -202,7 +202,7 @@ export default function LagerPage() {
       ) : filtered.length === 0 ? (
         <div className="text-center py-12 bg-white rounded-lg border border-[#e5e9ec]">
           <p className="font-medium text-[#1C2833] mb-1">Ingen lagervarer i denne kategorien</p>
-          <p className="text-[#5d6b7a] text-sm">Klikk "Legg til vare" for \xE5 starte lageret ditt.</p>
+          <p className="text-[#5d6b7a] text-sm">Klikk &quot;Legg til vare&quot; for å starte lageret ditt.</p>
         </div>
       ) : (
         <div className="bg-white rounded-lg border border-[#e5e9ec] shadow-sm overflow-hidden">
