@@ -6,8 +6,6 @@ import { getFeatureLimit, getPlan } from "@/lib/plans";
 
 export const runtime = "nodejs";
 
-let demoResponseIndex = 0;
-
 export async function POST(req: NextRequest) {
   const session = await auth();
   if (!session?.user?.id) {
@@ -56,8 +54,7 @@ export async function POST(req: NextRequest) {
   const openai = getOpenAI();
 
   if (!openai) {
-    const response = DEMO_RESPONSES[demoResponseIndex % DEMO_RESPONSES.length];
-    demoResponseIndex++;
+    const response = DEMO_RESPONSES[Math.floor(Math.random() * DEMO_RESPONSES.length)];
 
     let thread = threadId
       ? await prisma.chatThread.findUnique({ where: { id: threadId, userId } })
@@ -130,7 +127,7 @@ export async function POST(req: NextRequest) {
   let thread = threadId
     ? await prisma.chatThread.findUnique({
         where: { id: threadId, userId },
-        include: { messages: { orderBy: { createdAt: "asc" }, take: 20 } },
+        include: { messages: { orderBy: { createdAt: "desc" }, take: 20 } },
       })
     : null;
 
@@ -141,14 +138,10 @@ export async function POST(req: NextRequest) {
     });
   }
 
-  const previousMessages = (thread.messages ?? []).map((m) => ({
+  const previousMessages = [...(thread.messages ?? [])].reverse().map((m) => ({
     role: m.role as "user" | "assistant",
     content: m.content,
   }));
-
-  await prisma.chatMessage.create({
-    data: { threadId: thread.id, role: "user", content: message },
-  });
 
   try {
     const completion = await openai.chat.completions.create({
@@ -168,8 +161,11 @@ export async function POST(req: NextRequest) {
     const assistantMessage =
       completion.choices[0]?.message?.content ?? "Beklager, jeg kunne ikke generere et svar akkurat nå.";
 
-    await prisma.chatMessage.create({
-      data: { threadId: thread.id, role: "assistant", content: assistantMessage },
+    await prisma.chatMessage.createMany({
+      data: [
+        { threadId: thread.id, role: "user", content: message },
+        { threadId: thread.id, role: "assistant", content: assistantMessage },
+      ],
     });
 
     await prisma.subscription.upsert({
