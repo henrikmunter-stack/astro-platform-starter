@@ -141,10 +141,12 @@ export async function POST(req: NextRequest) {
     });
   }
 
-  const previousMessages = (thread.messages ?? []).map((m) => ({
-    role: m.role as "user" | "assistant",
-    content: m.content,
-  }));
+  const previousMessages = (thread.messages ?? [])
+    .filter((m) => m.content?.trim())
+    .map((m) => ({
+      role: m.role as "user" | "assistant",
+      content: m.content,
+    }));
 
   await prisma.chatMessage.create({
     data: { threadId: thread.id, role: "user", content: message },
