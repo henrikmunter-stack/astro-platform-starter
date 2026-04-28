@@ -1,10 +1,19 @@
 import Link from "next/link";
+import Image from "next/image";
 import { ShieldCheck, ArrowRight } from "lucide-react";
 
 export function Hero() {
   return (
-    <section className="bg-gradient-to-b from-[#1B4F72] to-[#2E86AB] text-white py-20 md:py-28">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <section className="relative text-white py-20 md:py-28 overflow-hidden">
+      <Image
+        src="/images/hero-family.jpg"
+        alt="Norsk familie forbereder seg på beredskap hjemme"
+        fill
+        className="object-cover object-center"
+        priority
+      />
+      <div className="absolute inset-0 bg-[#1B4F72]/75" aria-hidden="true" />
+      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="max-w-3xl mx-auto text-center">
           <div className="inline-flex items-center gap-2 bg-white/10 rounded-full px-4 py-1.5 text-sm font-medium mb-6">
             <ShieldCheck size={16} aria-hidden="true" />
