@@ -4,12 +4,15 @@ import { prisma } from "@/lib/prisma";
 import { getFeatureLimit } from "@/lib/plans";
 import { z } from "zod";
 
+const VALID_CATEGORIES = ["mat", "vann", "medisiner", "utstyr", "sikkerhetsutstyr", "annet"] as const;
+
 const itemSchema = z.object({
   name: z.string().min(1).max(200),
-  category: z.enum(["mat", "vann", "medisiner", "utstyr", "annet"]),
+  category: z.enum(VALID_CATEGORIES),
   quantity: z.number().positive(),
   unit: z.enum(["liter", "stk", "kg", "dager"]),
   expiresAt: z.string().optional().nullable(),
+  reminderDate: z.string().optional().nullable(),
   notes: z.string().optional().nullable(),
 });
 
@@ -38,6 +41,26 @@ export async function POST(req: NextRequest) {
   }
 
   const body = await req.json();
+
+  // Handle bulk creation for safety equipment presets
+  if (Array.isArray(body)) {
+    const items = await prisma.$transaction(
+      body.map((rawItem) => {
+        const parsed = itemSchema.safeParse(rawItem);
+        if (!parsed.success) throw new Error("Ugyldig data i bulk");
+        return prisma.inventoryItem.create({
+          data: {
+            userId: session.user.id!,
+            ...parsed.data,
+            expiresAt: parsed.data.expiresAt ? new Date(parsed.data.expiresAt) : null,
+            reminderDate: parsed.data.reminderDate ? new Date(parsed.data.reminderDate) : null,
+          },
+        });
+      })
+    );
+    return NextResponse.json(items, { status: 201 });
+  }
+
   const parsed = itemSchema.safeParse(body);
   if (!parsed.success) return NextResponse.json({ error: "Ugyldig data", details: parsed.error.issues }, { status: 400 });
 
@@ -46,6 +69,7 @@ export async function POST(req: NextRequest) {
       userId: session.user.id,
       ...parsed.data,
       expiresAt: parsed.data.expiresAt ? new Date(parsed.data.expiresAt) : null,
+      reminderDate: parsed.data.reminderDate ? new Date(parsed.data.reminderDate) : null,
     },
   });
 
@@ -71,7 +95,9 @@ export async function PUT(req: NextRequest) {
     where: { id },
     data: {
       ...parsed.data,
-      expiresAt: parsed.data.expiresAt ? new Date(parsed.data.expiresAt) : null,
+      expiresAt: parsed.data.expiresAt !== undefined ? (parsed.data.expiresAt ? new Date(parsed.data.expiresAt) : null) : undefined,
+      reminderDate: parsed.data.reminderDate !== undefined ? (parsed.data.reminderDate ? new Date(parsed.data.reminderDate) : null) : undefined,
+      reminderSentAt: null, // reset so a new reminder can be sent
     },
   });
 

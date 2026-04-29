@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import {
@@ -47,7 +47,15 @@ const bottomItems = [
 
 export function AppSidebar({ user }: AppSidebarProps) {
   const [collapsed, setCollapsed] = useState(false);
+  const [reminderCount, setReminderCount] = useState(0);
   const pathname = usePathname();
+
+  useEffect(() => {
+    fetch("/api/inventory/reminder-count")
+      .then((r) => r.json())
+      .then((d) => setReminderCount(d.count ?? 0))
+      .catch(() => {});
+  }, []);
 
   const isActive = (href: string, exact?: boolean) =>
     exact ? pathname === href : pathname.startsWith(href);
@@ -103,7 +111,12 @@ export function AppSidebar({ user }: AppSidebarProps) {
               title={collapsed ? item.label : undefined}
             >
               <Icon size={18} className="flex-shrink-0" aria-hidden="true" />
-              {!collapsed && <span className="truncate">{item.label}</span>}
+              {!collapsed && <span className="truncate flex-1">{item.label}</span>}
+              {item.href === "/app/lager" && reminderCount > 0 && (
+                <span className={`flex-shrink-0 text-xs font-semibold rounded-full px-1.5 py-0.5 bg-[#D4AC0D] text-white ${collapsed ? "absolute top-1 right-1 text-[10px] px-1" : ""}`}>
+                  {reminderCount}
+                </span>
+              )}
             </Link>
           );
         })}
