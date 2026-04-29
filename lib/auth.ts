@@ -3,20 +3,33 @@ import { PrismaAdapter } from "@auth/prisma-adapter";
 import Nodemailer from "next-auth/providers/nodemailer";
 import Google from "next-auth/providers/google";
 import { prisma } from "@/lib/prisma";
+import { sendEmail, magicLinkEmailHtml } from "@/lib/email";
 
 export const { handlers, auth, signIn, signOut } = NextAuth({
   adapter: PrismaAdapter(prisma),
   providers: [
     Nodemailer({
       server: {
-        host: process.env.EMAIL_SERVER_HOST,
+        host: process.env.EMAIL_SERVER_HOST ?? "smtp.resend.com",
         port: Number(process.env.EMAIL_SERVER_PORT ?? 587),
         auth: {
-          user: process.env.EMAIL_SERVER_USER,
-          pass: process.env.EMAIL_SERVER_PASSWORD,
+          user: process.env.EMAIL_SERVER_USER ?? "resend",
+          pass: process.env.EMAIL_SERVER_PASSWORD ?? process.env.RESEND_API_KEY,
         },
       },
-      from: process.env.EMAIL_FROM ?? "HjemTrygg <noreply@hjemtrygg.no>",
+      from: "HjemTrygg <noreply@hjemtrygg.no>",
+      async sendVerificationRequest({ identifier: email, url }) {
+        if (process.env.RESEND_API_KEY) {
+          await sendEmail({
+            to: email,
+            subject: "Din innloggingslenke til HjemTrygg",
+            html: magicLinkEmailHtml(url),
+          });
+        } else {
+          // Fallback: log URL in development when no email service is configured
+          console.log(`[DEV] Magic link for ${email}: ${url}`);
+        }
+      },
     }),
     ...(process.env.GOOGLE_CLIENT_ID && process.env.GOOGLE_CLIENT_SECRET
       ? [

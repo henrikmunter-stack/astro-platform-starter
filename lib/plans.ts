@@ -42,7 +42,7 @@ export const PLANS: Record<PlanKey, Plan> = {
     name: "Basis",
     price: 99,
     priceLabel: "99 kr/mnd",
-    stripePriceId: process.env.STRIPE_PRICE_BASIS,
+    stripePriceId: process.env.STRIPE_PRICE_ID_BASIS,
     features: {
       maxChecklists: 10,
       maxInventoryItems: 200,
@@ -59,7 +59,7 @@ export const PLANS: Record<PlanKey, Plan> = {
     name: "Pluss",
     price: 199,
     priceLabel: "199 kr/mnd",
-    stripePriceId: process.env.STRIPE_PRICE_PLUSS,
+    stripePriceId: process.env.STRIPE_PRICE_ID_PLUSS,
     features: {
       maxChecklists: 50,
       maxInventoryItems: 1000,
@@ -76,7 +76,7 @@ export const PLANS: Record<PlanKey, Plan> = {
     name: "Premium",
     price: 349,
     priceLabel: "349 kr/mnd",
-    stripePriceId: process.env.STRIPE_PRICE_PREMIUM,
+    stripePriceId: process.env.STRIPE_PRICE_ID_PREMIUM,
     features: {
       maxChecklists: Infinity,
       maxInventoryItems: Infinity,

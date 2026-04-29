@@ -28,19 +28,38 @@ export async function generateMetadata({
 }
 
 function renderMarkdown(content: string): string {
-  return content
+  let html = content
     .replace(/^## (.+)$/gm, '<h2 class="text-xl font-semibold text-[#1C2833] mt-8 mb-3">$1</h2>')
     .replace(/^### (.+)$/gm, '<h3 class="text-base font-semibold text-[#1C2833] mt-6 mb-2">$1</h3>')
     .replace(/\*\*(.+?)\*\*/g, '<strong class="font-semibold text-[#1C2833]">$1</strong>')
-    .replace(/^\- (.+)$/gm, '<li class="ml-4 text-[#5d6b7a] text-sm">$1</li>')
-    .replace(/(<li[^>]*>.*<\/li>\n?)+/g, '<ul class="space-y-1 my-3 list-disc list-inside">$&</ul>')
-    .replace(/^\| (.+) \|$/gm, (match) => {
-      const cells = match.split("|").filter((c) => c.trim());
-      return `<tr class="border-b border-[#e5e9ec]">${cells.map((c) => `<td class="py-2 px-3 text-sm text-[#5d6b7a]">${c.trim()}</td>`).join("")}</tr>`;
-    })
     .replace(/\[(.+?)\]\((.+?)\)/g, '<a href="$2" class="text-[#2E86AB] hover:underline" target="_blank" rel="noopener noreferrer">$1</a>')
+    .replace(/^\- (.+)$/gm, '<li class="ml-4 text-[#5d6b7a] text-sm">$1</li>')
+    .replace(/(<li[^>]*>.*?<\/li>\n?)+/g, '<ul class="space-y-1 my-3 list-disc list-inside">$&</ul>');
+
+  // Process tables: collect consecutive table rows, skip separator lines, wrap in <table>
+  html = html.replace(/((?:^\|.+\|\s*\n?)+)/gm, (block) => {
+    const rows = block.trim().split("\n").filter((line) => {
+      const trimmed = line.trim();
+      // Skip separator rows like |---|---|
+      return trimmed.startsWith("|") && !/^\|[\s\-|]+\|$/.test(trimmed);
+    });
+    if (rows.length === 0) return "";
+    const tableRows = rows.map((row, i) => {
+      const cells = row.split("|").slice(1, -1);
+      const tag = i === 0 ? "th" : "td";
+      const cellClass = i === 0
+        ? 'class="py-2 px-3 text-sm font-semibold text-[#1C2833] bg-[#F4F6F7]"'
+        : 'class="py-2 px-3 text-sm text-[#5d6b7a]"';
+      return `<tr class="border-b border-[#e5e9ec]">${cells.map((c) => `<${tag} ${cellClass}>${c.trim()}</${tag}>`).join("")}</tr>`;
+    });
+    return `<div class="overflow-x-auto my-4"><table class="w-full border border-[#e5e9ec] rounded-lg overflow-hidden">${tableRows.join("")}</table></div>`;
+  });
+
+  html = html
     .replace(/\n\n/g, '</p><p class="text-[#5d6b7a] text-sm leading-relaxed my-3">')
-    .replace(/^(?!<[hult])(.+)$/gm, '<p class="text-[#5d6b7a] text-sm leading-relaxed my-3">$1</p>');
+    .replace(/^(?!<[hultd])(.+)$/gm, '<p class="text-[#5d6b7a] text-sm leading-relaxed my-3">$1</p>');
+
+  return html;
 }
 
 export default function BloggArtikelPage({ params }: { params: { slug: string } }) {

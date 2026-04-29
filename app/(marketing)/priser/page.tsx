@@ -3,11 +3,19 @@ import { PricingTable } from "@/components/marketing/PricingTable";
 import { Check, X } from "lucide-react";
 import { PLANS } from "@/lib/plans";
 import Link from "next/link";
+import { EnterpriseForm } from "@/components/marketing/EnterpriseForm";
 
 export const metadata: Metadata = {
   title: "Priser og planer",
   description:
-    "Se alle priser og planer for HjemTrygg. Fra gratis demo til premium med ubegrenset tilgang.",
+    "Se alle priser og planer for HjemTrygg. Fra gratis demo til premium med ubegrenset tilgang til beredskapsverktøy.",
+  openGraph: {
+    title: "Priser og planer | HjemTrygg",
+    description: "Se alle priser og planer for HjemTrygg. Fra gratis demo til premium med ubegrenset tilgang.",
+    url: "https://hjemtrygg.no/priser",
+    siteName: "HjemTrygg",
+    type: "website",
+  },
 };
 
 export default function PriserPage() {
@@ -62,60 +70,7 @@ export default function PriserPage() {
               Er du interessert i HjemTrygg for din organisasjon, bedrift eller kommune?
               Vi tilbyr skreddersydde løsninger med volumpriser, brukerstyring og tilpasset opplæring.
             </p>
-            <form className="space-y-4">
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <div>
-                  <label htmlFor="org-name" className="block text-sm font-medium text-[#1C2833] mb-1">
-                    Navn
-                  </label>
-                  <input
-                    id="org-name"
-                    type="text"
-                    className="w-full h-10 px-3 rounded-md border border-[#e5e9ec] text-sm focus:outline-none focus:ring-2 focus:ring-[#1B4F72]"
-                    placeholder="Ditt navn"
-                  />
-                </div>
-                <div>
-                  <label htmlFor="org-email" className="block text-sm font-medium text-[#1C2833] mb-1">
-                    E-post
-                  </label>
-                  <input
-                    id="org-email"
-                    type="email"
-                    className="w-full h-10 px-3 rounded-md border border-[#e5e9ec] text-sm focus:outline-none focus:ring-2 focus:ring-[#1B4F72]"
-                    placeholder="din@organisasjon.no"
-                  />
-                </div>
-              </div>
-              <div>
-                <label htmlFor="org-company" className="block text-sm font-medium text-[#1C2833] mb-1">
-                  Organisasjon
-                </label>
-                <input
-                  id="org-company"
-                  type="text"
-                  className="w-full h-10 px-3 rounded-md border border-[#e5e9ec] text-sm focus:outline-none focus:ring-2 focus:ring-[#1B4F72]"
-                  placeholder="Navn på bedrift eller kommune"
-                />
-              </div>
-              <div>
-                <label htmlFor="org-message" className="block text-sm font-medium text-[#1C2833] mb-1">
-                  Melding
-                </label>
-                <textarea
-                  id="org-message"
-                  rows={3}
-                  className="w-full px-3 py-2 rounded-md border border-[#e5e9ec] text-sm focus:outline-none focus:ring-2 focus:ring-[#1B4F72]"
-                  placeholder="Beskriv hva dere er ute etter..."
-                />
-              </div>
-              <button
-                type="submit"
-                className="bg-[#1B4F72] text-white font-semibold px-6 py-2.5 rounded-md hover:bg-[#16405e] transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-[#1B4F72]"
-              >
-                Send forespørsel
-              </button>
-            </form>
+            <EnterpriseForm />
           </div>
         </div>
       </div>

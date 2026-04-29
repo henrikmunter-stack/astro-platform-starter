@@ -17,3 +17,9 @@ export function getStripe(): Stripe | null {
 export const stripe = getStripe();
 
 export const STRIPE_DEMO_MODE = !process.env.STRIPE_SECRET_KEY;
+
+export const PLAN_PRICE_MAP: Record<string, string> = {
+  basis: process.env.STRIPE_PRICE_ID_BASIS ?? "",
+  pluss: process.env.STRIPE_PRICE_ID_PLUSS ?? "",
+  premium: process.env.STRIPE_PRICE_ID_PREMIUM ?? "",
+};
