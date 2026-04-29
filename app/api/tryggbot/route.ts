@@ -10,16 +10,14 @@ let demoResponseIndex = 0;
 
 export async function POST(req: NextRequest) {
   const session = await auth();
-  if (!session?.user?.id) {
-    return NextResponse.json({ error: "Ikke autentisert" }, { status: 401 });
-  }
+
+  // MIDLERTIDIG: Autentisering deaktivert for visuell testing. Skru på igjen før launch.
+  const userId = session?.user?.id ?? "preview";
 
   const { message, threadId } = await req.json();
   if (!message?.trim()) {
     return NextResponse.json({ error: "Meldingen er tom" }, { status: 400 });
   }
-
-  const userId = session.user.id;
 
   const subscription = await prisma.subscription.findUnique({
     where: { userId },
