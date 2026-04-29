@@ -39,7 +39,7 @@ export async function POST(req: NextRequest) {
   let sent = 0;
   const sentIds: string[] = [];
 
-  for (const [, { email, name, items: userItems }] of byUser) {
+  for (const { email, name, items: userItems } of Array.from(byUser.values())) {
     const overdue = userItems.filter((i) => i.reminderDate! < now);
     const upcoming = userItems.filter((i) => i.reminderDate! >= now);
 
