@@ -7,6 +7,7 @@ import { authConfig } from "@/lib/auth.config";
 
 export const { handlers, auth, signIn, signOut } = NextAuth({
   ...authConfig,
+  secret: process.env.AUTH_SECRET ?? process.env.NEXTAUTH_SECRET,
   adapter: PrismaAdapter(prisma),
   providers: [
     Nodemailer({
@@ -16,7 +17,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
         auth: {
           user: process.env.EMAIL_SERVER_USER ?? "resend",
           pass:
-            process.env.EMAIL_SERVER_PASSWORD ?? process.env.RESEND_API_KEY,
+            process.env.EMAIL_SERVER_PASSWORD ?? process.env.RESEND_API_KEY ?? "",
         },
       },
       from: "HjemTrygg <noreply@hjemtrygg.no>",
