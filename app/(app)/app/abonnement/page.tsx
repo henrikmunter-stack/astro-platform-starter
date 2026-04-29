@@ -1,6 +1,8 @@
 // import { auth } from "@/lib/auth";
 // import { redirect } from "next/navigation";
 import { prisma } from "@/lib/prisma";
+
+export const dynamic = "force-dynamic";
 import { getPlan, PLANS, PlanKey } from "@/lib/plans";
 import Link from "next/link";
 import { formatDate } from "@/lib/utils";
@@ -18,7 +20,7 @@ export default async function AbonnementPage({
 
   const subscription = await prisma.subscription.findUnique({
     where: { userId: "preview" },
-  });
+  }).catch(() => null);
 
   const plan = getPlan(subscription);
   const isDemo = !subscription || subscription.plan === "demo";
