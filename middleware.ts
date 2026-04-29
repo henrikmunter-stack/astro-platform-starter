@@ -1,28 +1,28 @@
-import { auth } from "@/lib/auth";
-import { NextResponse } from "next/server";
-import type { NextRequest } from "next/server";
+import NextAuth from "next-auth";
+import { authConfig } from "@/lib/auth.config";
 
-export default auth((req: NextRequest & { auth: { user?: { email?: string | null } } | null }) => {
-  const { pathname } = req.nextUrl;
-  const session = req.auth;
+const { auth } = NextAuth(authConfig);
 
-  if (pathname.startsWith("/app") || pathname.startsWith("/admin")) {
-    if (!session?.user) {
-      const signInUrl = new URL("/logg-inn", req.url);
-      signInUrl.searchParams.set("callbackUrl", req.url);
-      return NextResponse.redirect(signInUrl);
+export default auth((req) => {
+  const { nextUrl } = req;
+  const isLoggedIn = !!req.auth?.user;
+
+  if (nextUrl.pathname.startsWith("/admin")) {
+    if (!isLoggedIn) {
+      return Response.redirect(new URL("/logg-inn", nextUrl));
+    }
+    const adminEmails =
+      process.env.ADMIN_EMAILS?.split(",").map((e) => e.trim()) ?? [];
+    if (!adminEmails.includes(req.auth?.user?.email ?? "")) {
+      return Response.redirect(new URL("/app", nextUrl));
     }
   }
 
-  if (pathname.startsWith("/admin")) {
-    const email = session?.user?.email ?? "";
-    const adminEmails = process.env.ADMIN_EMAILS?.split(",").map((e) => e.trim()) ?? [];
-    if (!adminEmails.includes(email)) {
-      return NextResponse.redirect(new URL("/app", req.url));
-    }
+  if (nextUrl.pathname.startsWith("/app") && !isLoggedIn) {
+    const signInUrl = new URL("/logg-inn", nextUrl);
+    signInUrl.searchParams.set("callbackUrl", nextUrl.href);
+    return Response.redirect(signInUrl);
   }
-
-  return NextResponse.next();
 });
 
 export const config = {
