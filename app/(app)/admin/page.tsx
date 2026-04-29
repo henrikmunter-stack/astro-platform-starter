@@ -1,5 +1,5 @@
-// import { auth } from "@/lib/auth";
-// import { redirect } from "next/navigation";
+import { auth } from "@/lib/auth";
+import { redirect } from "next/navigation";
 import { prisma } from "@/lib/prisma";
 
 export const dynamic = "force-dynamic";
@@ -17,11 +17,10 @@ export default async function AdminPage({
 }: {
   searchParams: { q?: string };
 }) {
-  // MIDLERTIDIG: Autentisering deaktivert for visuell testing. Skru på igjen før launch.
-  // const session = await auth();
-  // if (!session?.user?.email || !isAdmin(session.user.email)) {
-  //   redirect("/app");
-  // }
+  const session = await auth();
+  if (!session?.user?.email || !isAdmin(session.user.email)) {
+    redirect("/app");
+  }
 
   const search = searchParams.q?.trim() ?? "";
 

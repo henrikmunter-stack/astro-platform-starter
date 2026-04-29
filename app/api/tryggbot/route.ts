@@ -10,9 +10,11 @@ let demoResponseIndex = 0;
 
 export async function POST(req: NextRequest) {
   const session = await auth();
+  if (!session?.user?.id) {
+    return NextResponse.json({ error: "Ikke autentisert" }, { status: 401 });
+  }
 
-  // MIDLERTIDIG: Autentisering deaktivert for visuell testing. Skru på igjen før launch.
-  const userId = session?.user?.id ?? "preview";
+  const userId = session.user.id;
 
   const { message, threadId } = await req.json();
   if (!message?.trim()) {

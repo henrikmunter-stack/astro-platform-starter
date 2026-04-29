@@ -1,5 +1,5 @@
-// import { auth } from "@/lib/auth";
-// import { redirect } from "next/navigation";
+import { auth } from "@/lib/auth";
+import { redirect } from "next/navigation";
 import { prisma } from "@/lib/prisma";
 import { getPlan } from "@/lib/plans";
 import Link from "next/link";
@@ -16,11 +16,10 @@ import {
 export const dynamic = "force-dynamic";
 
 export default async function DashboardPage() {
-  // MIDLERTIDIG: Autentisering deaktivert for visuell testing. Skru på igjen før launch.
-  // const session = await auth();
-  // if (!session?.user?.id) redirect("/api/auth/signin");
+  const session = await auth();
+  if (!session?.user?.id) redirect("/logg-inn");
 
-  const userId = "preview";
+  const userId = session.user.id;
 
   const [subscription, checklists, inventoryItems, contacts, documents] =
     await Promise.all([
@@ -50,7 +49,7 @@ export default async function DashboardPage() {
 
   const isDemo = !subscription || subscription.plan === "demo";
 
-  const firstName = "deg";
+  const firstName = session.user.name?.split(" ")[0] ?? "deg";
 
   return (
     <div>
@@ -62,7 +61,7 @@ export default async function DashboardPage() {
       {isDemo && (
         <div className="bg-[#D4AC0D]/10 border border-[#D4AC0D]/30 rounded-lg p-4 mb-6 flex items-start justify-between gap-4">
           <div>
-            <p className="font-medium text-[#1C2833] text-sm">Du er p\xE5 Demo-planen</p>
+            <p className="font-medium text-[#1C2833] text-sm">Du er på Demo-planen</p>
             <p className="text-[#5d6b7a] text-sm">
               Oppgrader for ubegrenset tilgang til sjekklister, lagervarer og TryggBot.
             </p>
@@ -96,7 +95,7 @@ export default async function DashboardPage() {
           />
         </div>
         <p className="text-[#5d6b7a] text-sm mt-2">
-          {checkedItems.length} av {totalItems.length} sjekkliste-punkter fullf\xF8rt
+          {checkedItems.length} av {totalItems.length} sjekkliste-punkter fullført
         </p>
       </div>
 
@@ -104,7 +103,7 @@ export default async function DashboardPage() {
         <div className="bg-[#C0392B]/10 border border-[#C0392B]/30 rounded-lg p-4 mb-6 flex items-start gap-3">
           <AlertTriangle size={18} className="text-[#C0392B] mt-0.5 flex-shrink-0" aria-hidden="true" />
           <p className="text-sm text-[#1C2833]">
-            <strong>{expiringCount} vare(r)</strong> i lageret utl\xF8per innen 30 dager.{" "}
+            <strong>{expiringCount} vare(r)</strong> i lageret utløper innen 30 dager.{" "}
             <Link href="/app/lager" className="text-[#C0392B] underline">Sjekk lageret</Link>
           </p>
         </div>
@@ -117,7 +116,7 @@ export default async function DashboardPage() {
             icon: ClipboardList,
             label: "Sjekklister",
             count: checklists.length,
-            sub: `${completionRate}% fullf\xF8rt`,
+            sub: `${completionRate}% fullført`,
           },
           {
             href: "/app/lager",
@@ -166,14 +165,14 @@ export default async function DashboardPage() {
               <h2 className="font-semibold">TryggBot</h2>
             </div>
             <p className="text-blue-200 text-sm">
-              Din personlige beredskapsassistent. Stil sp\xF8rsm\xE5l om n\xF8dpreparasjon, lagring og familieplan.
+              Din personlige beredskapsassistent. Still spørsmål om nødpreparasjon, lagring og familieplan.
             </p>
           </div>
           <Link
             href="/app/tryggbot"
             className="flex-shrink-0 bg-white text-[#1B4F72] text-sm font-semibold px-4 py-2 rounded-md hover:bg-blue-50 transition-colors"
           >
-            \xC5pne chat
+            Åpne chat
           </Link>
         </div>
       </div>

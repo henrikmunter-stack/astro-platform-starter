@@ -1,5 +1,5 @@
-// import { auth } from "@/lib/auth";
-// import { redirect } from "next/navigation";
+import { auth } from "@/lib/auth";
+import { redirect } from "next/navigation";
 import { prisma } from "@/lib/prisma";
 
 export const dynamic = "force-dynamic";
@@ -14,12 +14,11 @@ export default async function AbonnementPage({
 }: {
   searchParams: { success?: string };
 }) {
-  // MIDLERTIDIG: Autentisering deaktivert for visuell testing. Skru på igjen før launch.
-  // const session = await auth();
-  // if (!session?.user?.id) redirect("/api/auth/signin");
+  const session = await auth();
+  if (!session?.user?.id) redirect("/logg-inn");
 
   const subscription = await prisma.subscription.findUnique({
-    where: { userId: "preview" },
+    where: { userId: session.user.id },
   }).catch(() => null);
 
   const plan = getPlan(subscription);
@@ -77,7 +76,7 @@ export default async function AbonnementPage({
         <div className="bg-white rounded-lg border border-[#e5e9ec] shadow-sm p-6">
           <h2 className="font-semibold text-[#1C2833] mb-4">TryggBot-kvote</h2>
           <div className="flex items-baseline justify-between mb-2">
-            <span className="text-sm text-[#5d6b7a]">Brukt denne m\xE5neden</span>
+            <span className="text-sm text-[#5d6b7a]">Brukt denne måneden</span>
             <span className="font-semibold text-[#1C2833]">
               {messagesUsed} / {isFinite(messagesLimit) ? messagesLimit : "Ubegrenset"}
             </span>
@@ -90,7 +89,7 @@ export default async function AbonnementPage({
               />
             </div>
           )}
-          <p className="text-xs text-[#5d6b7a]">Kvoten nullstilles 1. hver m\xE5ned</p>
+          <p className="text-xs text-[#5d6b7a]">Kvoten nullstilles 1. hver måned</p>
         </div>
       </div>
 
