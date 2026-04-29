@@ -61,10 +61,11 @@ export async function GET() {
   }) as ReactElement<any>; // cast needed: renderToBuffer expects DocumentProps, but Props is compatible at runtime
 
   const buffer = await renderToBuffer(element);
+  const arrayBuffer = buffer.buffer.slice(buffer.byteOffset, buffer.byteOffset + buffer.byteLength);
 
   const filename = `hjemtrygg-beredskapsplan-${new Date().toISOString().slice(0, 10)}.pdf`;
 
-  return new NextResponse(buffer, {
+  return new NextResponse(arrayBuffer, {
     status: 200,
     headers: {
       "Content-Type": "application/pdf",
