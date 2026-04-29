@@ -3,6 +3,7 @@ import { redirect } from "next/navigation";
 import { prisma } from "@/lib/prisma";
 import { getPlan } from "@/lib/plans";
 import Link from "next/link";
+import { ExportPdfButton } from "@/components/app/ExportPdfButton";
 import {
   ClipboardList,
   Package,
@@ -155,6 +156,14 @@ export default async function DashboardPage() {
             <p className="text-[#5d6b7a] text-xs mt-0.5">{sub}</p>
           </Link>
         ))}
+      </div>
+
+      <div className="bg-white rounded-lg border border-[#e5e9ec] shadow-sm p-5 mb-6 flex items-center justify-between gap-4 flex-wrap">
+        <div>
+          <p className="font-semibold text-[#1C2833] text-sm">Last ned beredskapsplan som PDF</p>
+          <p className="text-[#5d6b7a] text-xs mt-0.5">Sjekklister, lager, familieplan og møtepunkter i ett dokument.</p>
+        </div>
+        <ExportPdfButton />
       </div>
 
       <div className="bg-[#1B4F72] rounded-lg p-6 text-white">

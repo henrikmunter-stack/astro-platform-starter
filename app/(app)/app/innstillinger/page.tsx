@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useSession } from "next-auth/react";
 import { signOut } from "next-auth/react";
 import { Download, Trash2, AlertTriangle, CheckCircle } from "lucide-react";
+import { ExportPdfButton } from "@/components/app/ExportPdfButton";
 
 export default function InnstillingerPage() {
   const { data: session, update } = useSession();
@@ -176,6 +177,14 @@ export default function InnstillingerPage() {
 
       {activeTab === "account" && (
         <div className="space-y-5">
+          <div className="bg-white rounded-lg border border-[#e5e9ec] shadow-sm p-6">
+            <h2 className="font-semibold text-[#1C2833] mb-2">Last ned beredskapsplan (PDF)</h2>
+            <p className="text-[#5d6b7a] text-sm mb-4">
+              Last ned hele beredskapsplanen din som et PDF-dokument — sjekklister, lager, familieplan og møtepunkter samlet på én gang.
+            </p>
+            <ExportPdfButton />
+          </div>
+
           <div className="bg-white rounded-lg border border-[#e5e9ec] shadow-sm p-6">
             <h2 className="font-semibold text-[#1C2833] mb-2">Eksportér mine data</h2>
             <p className="text-[#5d6b7a] text-sm mb-4">

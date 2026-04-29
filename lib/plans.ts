@@ -66,7 +66,7 @@ export const PLANS: Record<PlanKey, Plan> = {
       maxFamilyContacts: 50,
       maxDocuments: 25,
       chatMessagesPerMonth: 1000,
-      canExport: false,
+      canExport: true,
       advancedTemplates: true,
       prioritySupport: false,
     },
