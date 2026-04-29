@@ -1,6 +1,6 @@
-import { auth } from "@/lib/auth";
+// import { auth } from "@/lib/auth";
+// import { redirect } from "next/navigation";
 import { prisma } from "@/lib/prisma";
-import { redirect } from "next/navigation";
 import { getPlan, PLANS, PlanKey } from "@/lib/plans";
 import Link from "next/link";
 import { formatDate } from "@/lib/utils";
@@ -12,11 +12,12 @@ export default async function AbonnementPage({
 }: {
   searchParams: { success?: string };
 }) {
-  const session = await auth();
-  if (!session?.user?.id) redirect("/api/auth/signin");
+  // MIDLERTIDIG: Autentisering deaktivert for visuell testing. Skru på igjen før launch.
+  // const session = await auth();
+  // if (!session?.user?.id) redirect("/api/auth/signin");
 
   const subscription = await prisma.subscription.findUnique({
-    where: { userId: session.user.id },
+    where: { userId: "preview" },
   });
 
   const plan = getPlan(subscription);

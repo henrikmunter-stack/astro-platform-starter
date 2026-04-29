@@ -1,6 +1,6 @@
-import { auth } from "@/lib/auth";
+// import { auth } from "@/lib/auth";
+// import { redirect } from "next/navigation";
 import { prisma } from "@/lib/prisma";
-import { redirect } from "next/navigation";
 import { getPlan } from "@/lib/plans";
 import Link from "next/link";
 import {
@@ -14,10 +14,11 @@ import {
 } from "lucide-react";
 
 export default async function DashboardPage() {
-  const session = await auth();
-  if (!session?.user?.id) redirect("/api/auth/signin");
+  // MIDLERTIDIG: Autentisering deaktivert for visuell testing. Skru på igjen før launch.
+  // const session = await auth();
+  // if (!session?.user?.id) redirect("/api/auth/signin");
 
-  const userId = session.user.id;
+  const userId = "preview";
 
   const [subscription, checklists, inventoryItems, contacts, documents] =
     await Promise.all([
@@ -50,7 +51,7 @@ export default async function DashboardPage() {
 
   const isDemo = !subscription || subscription.plan === "demo";
 
-  const firstName = session.user.name?.split(" ")[0] ?? "deg";
+  const firstName = "deg";
 
   return (
     <div>

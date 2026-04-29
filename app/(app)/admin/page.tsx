@@ -1,6 +1,6 @@
-import { auth } from "@/lib/auth";
+// import { auth } from "@/lib/auth";
+// import { redirect } from "next/navigation";
 import { prisma } from "@/lib/prisma";
-import { redirect } from "next/navigation";
 import { formatDate } from "@/lib/utils";
 import { ShieldAlert } from "lucide-react";
 
@@ -15,10 +15,11 @@ export default async function AdminPage({
 }: {
   searchParams: { q?: string };
 }) {
-  const session = await auth();
-  if (!session?.user?.email || !isAdmin(session.user.email)) {
-    redirect("/app");
-  }
+  // MIDLERTIDIG: Autentisering deaktivert for visuell testing. Skru på igjen før launch.
+  // const session = await auth();
+  // if (!session?.user?.email || !isAdmin(session.user.email)) {
+  //   redirect("/app");
+  // }
 
   const search = searchParams.q?.trim() ?? "";
 
