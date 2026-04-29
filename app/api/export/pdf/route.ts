@@ -3,7 +3,7 @@ import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { canAccess } from "@/lib/plans";
 import { renderToBuffer } from "@react-pdf/renderer";
-import { createElement } from "react";
+import { createElement, type ReactElement } from "react";
 import { BeredskapsplanDocument } from "@/lib/pdf/BeredskapsplanDocument";
 
 export const runtime = "nodejs";
@@ -51,16 +51,16 @@ export async function GET() {
     year: "numeric",
   });
 
-  const buffer = await renderToBuffer(
-    createElement(BeredskapsplanDocument, {
-      userName: session.user.name ?? null,
-      generatedAt,
-      checklists,
-      inventoryItems,
-      contacts,
-      meetingPoints,
-    })
-  );
+  const element = createElement(BeredskapsplanDocument, {
+    userName: session.user.name ?? null,
+    generatedAt,
+    checklists,
+    inventoryItems,
+    contacts,
+    meetingPoints,
+  }) as ReactElement<any>; // cast needed: renderToBuffer expects DocumentProps, but Props is compatible at runtime
+
+  const buffer = await renderToBuffer(element);
 
   const filename = `hjemtrygg-beredskapsplan-${new Date().toISOString().slice(0, 10)}.pdf`;
 
