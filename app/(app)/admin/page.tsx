@@ -1,6 +1,8 @@
-import { auth } from "@/lib/auth";
+// import { auth } from "@/lib/auth";
+// import { redirect } from "next/navigation";
 import { prisma } from "@/lib/prisma";
-import { redirect } from "next/navigation";
+
+export const dynamic = "force-dynamic";
 import { formatDate } from "@/lib/utils";
 import { ShieldAlert } from "lucide-react";
 
@@ -15,32 +17,29 @@ export default async function AdminPage({
 }: {
   searchParams: { q?: string };
 }) {
-  const session = await auth();
-  if (!session?.user?.email || !isAdmin(session.user.email)) {
-    redirect("/app");
-  }
+  // MIDLERTIDIG: Autentisering deaktivert for visuell testing. Skru på igjen før launch.
+  // const session = await auth();
+  // if (!session?.user?.email || !isAdmin(session.user.email)) {
+  //   redirect("/app");
+  // }
 
   const search = searchParams.q?.trim() ?? "";
 
-  const users = await prisma.user.findMany({
-    where: {
-      deletedAt: null,
-      ...(search
-        ? {
-            OR: [
-              { email: { contains: search, mode: "insensitive" } },
-              { name: { contains: search, mode: "insensitive" } },
-            ],
-          }
-        : {}),
-    },
-    include: { subscription: true },
-    orderBy: { createdAt: "desc" },
-    take: 100,
-  });
-
-  const totalUsers = await prisma.user.count({ where: { deletedAt: null } });
-  const activeSubscriptions = await prisma.subscription.count({ where: { status: "active" } });
+  const [users, totalUsers, activeSubscriptions] = await Promise.all([
+    prisma.user.findMany({
+      where: {
+        deletedAt: null,
+        ...(search
+          ? { OR: [{ email: { contains: search, mode: "insensitive" } }, { name: { contains: search, mode: "insensitive" } }] }
+          : {}),
+      },
+      include: { subscription: true },
+      orderBy: { createdAt: "desc" },
+      take: 100,
+    }).catch(() => []),
+    prisma.user.count({ where: { deletedAt: null } }).catch(() => 0),
+    prisma.subscription.count({ where: { status: "active" } }).catch(() => 0),
+  ]);
 
   return (
     <div>

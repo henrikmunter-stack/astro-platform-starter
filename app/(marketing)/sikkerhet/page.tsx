@@ -3,7 +3,14 @@ import { Lock, Server, Eye, Trash2, Users, AlertTriangle } from "lucide-react";
 
 export const metadata: Metadata = {
   title: "Sikkerhet",
-  description: "Les om HjemTrygges sikkerhetsarkitektur, kryptering og rutiner.",
+  description: "Les om HjemTrygges sikkerhetsarkitektur, kryptering, GDPR-tiltak og rutiner for å beskytte dine beredskapsdata.",
+  openGraph: {
+    title: "Sikkerhet | HjemTrygg",
+    description: "Les om HjemTrygges sikkerhetsarkitektur, kryptering og rutiner for å beskytte dine beredskapsdata.",
+    url: "https://hjemtrygg.no/sikkerhet",
+    siteName: "HjemTrygg",
+    type: "website",
+  },
 };
 
 export default function SikkerhetPage() {

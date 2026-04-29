@@ -1,6 +1,6 @@
-import { auth } from "@/lib/auth";
+// import { auth } from "@/lib/auth";
+// import { redirect } from "next/navigation";
 import { prisma } from "@/lib/prisma";
-import { redirect } from "next/navigation";
 import { getPlan } from "@/lib/plans";
 import Link from "next/link";
 import {
@@ -13,22 +13,22 @@ import {
   AlertTriangle,
 } from "lucide-react";
 
-export default async function DashboardPage() {
-  const session = await auth();
-  if (!session?.user?.id) redirect("/api/auth/signin");
+export const dynamic = "force-dynamic";
 
-  const userId = session.user.id;
+export default async function DashboardPage() {
+  // MIDLERTIDIG: Autentisering deaktivert for visuell testing. Skru på igjen før launch.
+  // const session = await auth();
+  // if (!session?.user?.id) redirect("/api/auth/signin");
+
+  const userId = "preview";
 
   const [subscription, checklists, inventoryItems, contacts, documents] =
     await Promise.all([
-      prisma.subscription.findUnique({ where: { userId } }),
-      prisma.checklist.findMany({
-        where: { userId },
-        include: { items: true },
-      }),
-      prisma.inventoryItem.findMany({ where: { userId } }),
-      prisma.familyContact.findMany({ where: { userId } }),
-      prisma.document.findMany({ where: { userId } }),
+      prisma.subscription.findUnique({ where: { userId } }).catch(() => null),
+      prisma.checklist.findMany({ where: { userId }, include: { items: true } }).catch(() => []),
+      prisma.inventoryItem.findMany({ where: { userId } }).catch(() => []),
+      prisma.familyContact.findMany({ where: { userId } }).catch(() => []),
+      prisma.document.findMany({ where: { userId } }).catch(() => []),
     ]);
 
   const plan = getPlan(subscription);
@@ -50,7 +50,7 @@ export default async function DashboardPage() {
 
   const isDemo = !subscription || subscription.plan === "demo";
 
-  const firstName = session.user.name?.split(" ")[0] ?? "deg";
+  const firstName = "deg";
 
   return (
     <div>

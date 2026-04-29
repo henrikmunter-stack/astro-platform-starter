@@ -17,7 +17,10 @@ export function Footer() {
               å planlegge, forberede og holde oversikt over familiens beredskap.
             </p>
             <p className="text-gray-500 text-xs mt-4">
-              HjemTrygg AS, org.nr. 123 456 789
+              HjemTrygg AS, org.nr. 933 219 569
+            </p>
+            <p className="text-gray-500 text-xs mt-1">
+              Driftet av Münter Rådgivning, org.nr. 933 219 569
             </p>
           </div>
 

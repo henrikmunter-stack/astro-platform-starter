@@ -1,8 +1,15 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Brukervilkar",
-  description: "Les HjemTrygges brukervilkar og avtalevilkar for bruk av tjenesten.",
+  title: "Brukervilkår",
+  description: "Les HjemTrygges brukervilkår og avtalevilkår for bruk av tjenesten. Gjeldende for alle abonnementer.",
+  openGraph: {
+    title: "Brukervilkår | HjemTrygg",
+    description: "Les HjemTrygges brukervilkår og avtalevilkår for bruk av tjenesten.",
+    url: "https://hjemtrygg.no/vilkar",
+    siteName: "HjemTrygg",
+    type: "website",
+  },
 };
 
 export default function VilkarPage() {
@@ -16,7 +23,7 @@ export default function VilkarPage() {
           {[
             {
               title: "1. Definisjoner",
-              content: `"Tjenesten" refererer til HjemTrygg-plattformen tilgjengelig via hjemtrygg.no. "Bruker" eller "du" betyr enhver person som oppretter en konto og benytter tjenesten. "HjemTrygg" eller "vi" refererer til HjemTrygg AS, org.nr. 123 456 789.`
+              content: `"Tjenesten" refererer til HjemTrygg-plattformen tilgjengelig via hjemtrygg.no. "Bruker" eller "du" betyr enhver person som oppretter en konto og benytter tjenesten. "HjemTrygg" eller "vi" refererer til HjemTrygg AS, org.nr. 933 219 569, driftet av Münter Rådgivning, org.nr. 933 219 569.`
             },
             {
               title: "2. Tjenestebeskrivelse",

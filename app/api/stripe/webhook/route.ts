@@ -6,9 +6,9 @@ import Stripe from "stripe";
 export const runtime = "nodejs";
 
 function getPlanFromPriceId(priceId: string): string {
-  if (priceId === process.env.STRIPE_PRICE_BASIS) return "basis";
-  if (priceId === process.env.STRIPE_PRICE_PLUSS) return "pluss";
-  if (priceId === process.env.STRIPE_PRICE_PREMIUM) return "premium";
+  if (priceId === process.env.STRIPE_PRICE_ID_BASIS) return "basis";
+  if (priceId === process.env.STRIPE_PRICE_ID_PLUSS) return "pluss";
+  if (priceId === process.env.STRIPE_PRICE_ID_PREMIUM) return "premium";
   return "demo";
 }
 

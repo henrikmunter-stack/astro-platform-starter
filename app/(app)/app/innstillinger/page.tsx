@@ -2,38 +2,56 @@
 
 import { useState } from "react";
 import { useSession } from "next-auth/react";
-import { Download, Trash2, AlertTriangle } from "lucide-react";
+import { signOut } from "next-auth/react";
+import { Download, Trash2, AlertTriangle, CheckCircle } from "lucide-react";
 
 export default function InnstillingerPage() {
-  const { data: session } = useSession();
+  const { data: session, update } = useSession();
   const [activeTab, setActiveTab] = useState<"profile" | "security" | "account">("profile");
   const [name, setName] = useState(session?.user?.name ?? "");
+  const [profileStatus, setProfileStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
+  const [profileError, setProfileError] = useState("");
   const [deleteConfirm, setDeleteConfirm] = useState("");
+  const [deleteStatus, setDeleteStatus] = useState<"idle" | "loading">("idle");
+
+  const handleSaveProfile = async () => {
+    setProfileStatus("loading");
+    setProfileError("");
+    try {
+      const res = await fetch("/api/bruker/profil", {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name }),
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        setProfileError(data.error ?? "Klarte ikke å lagre endringer.");
+        setProfileStatus("error");
+      } else {
+        await update({ name: data.name });
+        setProfileStatus("success");
+        setTimeout(() => setProfileStatus("idle"), 3000);
+      }
+    } catch {
+      setProfileError("Noe gikk galt. Prøv igjen.");
+      setProfileStatus("error");
+    }
+  };
 
   const handleExportData = async () => {
-    const res = await fetch("/api/family");
-    const familyData = res.ok ? await res.json() : {};
-    const [checklistRes, inventoryRes, docsRes] = await Promise.all([
-      fetch("/api/checklist"),
-      fetch("/api/inventory"),
-      fetch("/api/documents"),
-    ]);
-    const data = {
-      exportedAt: new Date().toISOString(),
-      user: { email: session?.user?.email, name: session?.user?.name },
-      checklists: checklistRes.ok ? await checklistRes.json() : [],
-      inventory: inventoryRes.ok ? await inventoryRes.json() : [],
-      family: familyData,
-      documents: docsRes.ok ? await docsRes.json() : [],
-    };
-
-    const blob = new Blob([JSON.stringify(data, null, 2)], { type: "application/json" });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = `hjemtrygg-data-${new Date().toISOString().slice(0, 10)}.json`;
-    a.click();
-    URL.revokeObjectURL(url);
+    try {
+      const res = await fetch("/api/bruker/eksport");
+      if (!res.ok) throw new Error("Eksport feilet");
+      const blob = await res.blob();
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = `hjemtrygg-data-${new Date().toISOString().slice(0, 10)}.json`;
+      a.click();
+      URL.revokeObjectURL(url);
+    } catch {
+      alert("Klarte ikke å eksportere data. Prøv igjen.");
+    }
   };
 
   const handleDeleteAccount = async () => {
@@ -41,7 +59,24 @@ export default function InnstillingerPage() {
       alert('Skriv "SLETT" for å bekrefte kontosletting.');
       return;
     }
-    alert("Kontosletting vil bli implementert via serveraction. Kontakt support@hjemtrygg.no for umiddelbar sletting.");
+    setDeleteStatus("loading");
+    try {
+      const res = await fetch("/api/bruker/profil", {
+        method: "DELETE",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ confirm: "SLETT" }),
+      });
+      if (res.ok) {
+        await signOut({ callbackUrl: "/" });
+      } else {
+        const data = await res.json();
+        alert(data.error ?? "Klarte ikke å slette konto. Kontakt hei@hjemtrygg.no.");
+        setDeleteStatus("idle");
+      }
+    } catch {
+      alert("Noe gikk galt. Kontakt hei@hjemtrygg.no for manuell sletting.");
+      setDeleteStatus("idle");
+    }
   };
 
   return (
@@ -95,8 +130,22 @@ export default function InnstillingerPage() {
               />
               <p className="text-xs text-[#5d6b7a] mt-1">E-post kan endres via lenken i Sikkerhet-fanen.</p>
             </div>
-            <button className="bg-[#1B4F72] text-white text-sm font-semibold px-5 py-2 rounded-md hover:bg-[#16405e] transition-colors">
-              Lagre endringer
+
+            {profileStatus === "error" && (
+              <p className="text-sm text-[#C0392B] bg-[#C0392B]/10 rounded-md px-4 py-2">{profileError}</p>
+            )}
+            {profileStatus === "success" && (
+              <p className="text-sm text-[#1E8449] bg-[#1E8449]/10 rounded-md px-4 py-2 flex items-center gap-2">
+                <CheckCircle size={14} aria-hidden="true" /> Endringer lagret.
+              </p>
+            )}
+
+            <button
+              onClick={handleSaveProfile}
+              disabled={profileStatus === "loading"}
+              className="bg-[#1B4F72] text-white text-sm font-semibold px-5 py-2 rounded-md hover:bg-[#16405e] transition-colors disabled:opacity-60"
+            >
+              {profileStatus === "loading" ? "Lagrer..." : "Lagre endringer"}
             </button>
           </div>
         </div>
@@ -107,7 +156,7 @@ export default function InnstillingerPage() {
           <h2 className="font-semibold text-[#1C2833] mb-4">Sikkerhet</h2>
           <div className="max-w-md space-y-4">
             <div className="bg-[#F4F6F7] rounded-lg p-4">
-              <p className="font-medium text-[#1C2833] text-sm mb-1">HjemTrygg bruker passordl\xF8s innlogging</p>
+              <p className="font-medium text-[#1C2833] text-sm mb-1">HjemTrygg bruker passordløs innlogging</p>
               <p className="text-[#5d6b7a] text-sm">
                 Vi sender deg en magic link via e-post. Det er ingen passord å huske eller bytte.
               </p>
@@ -116,8 +165,8 @@ export default function InnstillingerPage() {
               <p className="text-sm font-medium text-[#1C2833] mb-2">Endre e-postadresse</p>
               <p className="text-sm text-[#5d6b7a] mb-3">
                 For å endre e-postadressen din, send oss en e-post fra din nåværende adresse til{" "}
-                <a href="mailto:support@hjemtrygg.no" className="text-[#2E86AB] hover:underline">
-                  support@hjemtrygg.no
+                <a href="mailto:hei@hjemtrygg.no" className="text-[#2E86AB] hover:underline">
+                  hei@hjemtrygg.no
                 </a>
               </p>
             </div>
@@ -128,7 +177,7 @@ export default function InnstillingerPage() {
       {activeTab === "account" && (
         <div className="space-y-5">
           <div className="bg-white rounded-lg border border-[#e5e9ec] shadow-sm p-6">
-            <h2 className="font-semibold text-[#1C2833] mb-2">Eksport\xe9r mine data</h2>
+            <h2 className="font-semibold text-[#1C2833] mb-2">Eksportér mine data</h2>
             <p className="text-[#5d6b7a] text-sm mb-4">
               Last ned alle dine data som JSON (GDPR-rettighet). Inkluderer sjekklister, lager, familieplan og dokumentmetadata.
             </p>
@@ -147,7 +196,7 @@ export default function InnstillingerPage() {
               Slett konto
             </h2>
             <p className="text-[#5d6b7a] text-sm mb-4">
-              Dette vil slette alle dine data permanent. Handlingen kan ikke angres. Du vil miste alle sjekklister, lagervarer og familiekontakter.
+              Dette vil markere kontoen din som slettet. Data slettes permanent innen 90 dager. Handlingen kan ikke angres.
             </p>
             <div className="space-y-3">
               <div>
@@ -165,11 +214,11 @@ export default function InnstillingerPage() {
               </div>
               <button
                 onClick={handleDeleteAccount}
-                disabled={deleteConfirm !== "SLETT"}
+                disabled={deleteConfirm !== "SLETT" || deleteStatus === "loading"}
                 className="flex items-center gap-2 bg-[#C0392B] text-white text-sm font-semibold px-4 py-2 rounded-md hover:bg-[#a93226] disabled:opacity-50 transition-colors"
               >
                 <Trash2 size={16} aria-hidden="true" />
-                Slett konto permanent
+                {deleteStatus === "loading" ? "Sletter..." : "Slett konto permanent"}
               </button>
             </div>
           </div>

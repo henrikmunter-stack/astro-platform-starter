@@ -2,7 +2,14 @@ import type { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "Personvernerklæring",
-  description: "Les HjemTrygges personvernerklæring og finn ut hvordan vi håndterer dine data.",
+  description: "Les HjemTrygges personvernerklæring og finn ut hvordan vi håndterer dine data i tråd med GDPR.",
+  openGraph: {
+    title: "Personvernerklæring | HjemTrygg",
+    description: "Les HjemTrygges personvernerklæring og finn ut hvordan vi håndterer dine data i tråd med GDPR.",
+    url: "https://hjemtrygg.no/personvern",
+    siteName: "HjemTrygg",
+    type: "website",
+  },
 };
 
 export default function PersonvernPage() {
@@ -16,7 +23,7 @@ export default function PersonvernPage() {
           <section className="bg-white rounded-lg border border-[#e5e9ec] shadow-sm p-6">
             <h2 className="text-xl font-semibold text-[#1C2833] mb-3">1. Behandlingsansvarlig</h2>
             <p className="text-[#5d6b7a] text-sm leading-relaxed">
-              HjemTrygg AS, org.nr. 123 456 789, Storgata 1, 0155 Oslo, er behandlingsansvarlig for
+              HjemTrygg AS, org.nr. 933 219 569 (driftet av Münter Rådgivning, org.nr. 933 219 569), Sagesundveien 133, 4904 Tvedestrand, er behandlingsansvarlig for
               personopplysninger som behandles i forbindelse med bruk av tjenesten HjemTrygg.
               Kontakt: personvern@hjemtrygg.no
             </p>
