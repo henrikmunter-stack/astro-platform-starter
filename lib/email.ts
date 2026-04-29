@@ -20,7 +20,7 @@ export async function sendEmail({
   const resend = getResend();
   if (!resend) throw new Error("RESEND_API_KEY ikke konfigurert");
   return resend.emails.send({
-    from: "HjemTrygg <noreply@hjemtrygg.no>",
+    from: "HjemTrygg <onboarding@resend.dev>", // TODO: Bytt til noreply@hjemtrygg.no når domenet er verifisert i Resend
     to,
     subject,
     html,
