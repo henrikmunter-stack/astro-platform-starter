@@ -2,10 +2,12 @@ import { NextRequest, NextResponse } from "next/server";
 import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { getFeatureLimit } from "@/lib/plans";
+import { TEMPLATES } from "@/lib/checklist-templates";
 import { z } from "zod";
 
 const createSchema = z.object({
   title: z.string().min(1).max(200),
+  fromTemplateId: z.string().optional(),
   items: z.array(z.object({ text: z.string().min(1), checked: z.boolean().optional() })).optional(),
 });
 
@@ -43,13 +45,21 @@ export async function POST(req: NextRequest) {
   const parsed = createSchema.safeParse(body);
   if (!parsed.success) return NextResponse.json({ error: "Ugyldig data" }, { status: 400 });
 
+  const templateItems = parsed.data.fromTemplateId
+    ? TEMPLATES.find((t) => t.id === parsed.data.fromTemplateId)?.items ?? []
+    : [];
+
+  const itemsToCreate =
+    parsed.data.items ??
+    templateItems.map((text) => ({ text, checked: false }));
+
   const checklist = await prisma.checklist.create({
     data: {
       userId: session.user.id,
       title: parsed.data.title,
-      items: parsed.data.items
+      items: itemsToCreate.length > 0
         ? {
-            create: parsed.data.items.map((item, i) => ({
+            create: itemsToCreate.map((item, i) => ({
               text: item.text,
               checked: item.checked ?? false,
               order: i,

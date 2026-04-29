@@ -49,11 +49,17 @@ export default function SjekklistePage() {
   });
   const [usingTemplate, setUsingTemplate] = useState<string | null>(null);
   const [templateSuccess, setTemplateSuccess] = useState<string | null>(null);
+  const [fetchError, setFetchError] = useState<string | null>(null);
   const newChecklistRef = useRef<HTMLDivElement>(null);
 
   const fetchChecklists = useCallback(async () => {
     const res = await fetch("/api/checklist");
-    if (res.ok) setChecklists(await res.json());
+    if (res.ok) {
+      setChecklists(await res.json());
+      setFetchError(null);
+    } else {
+      setFetchError(res.status === 401 ? "Du er ikke innlogget." : "Kunne ikke laste sjekklister.");
+    }
     setLoading(false);
   }, []);
 
@@ -309,6 +315,10 @@ export default function SjekklistePage() {
       {loading ? (
         <div className="text-center py-12 text-[#5d6b7a]">
           Laster sjekklister...
+        </div>
+      ) : fetchError ? (
+        <div className="text-center py-12 bg-white rounded-lg border border-[#e5e9ec]">
+          <p className="text-[#C0392B] text-sm">{fetchError}</p>
         </div>
       ) : checklists.length === 0 ? (
         <div className="text-center py-12 bg-white rounded-lg border border-[#e5e9ec]">
