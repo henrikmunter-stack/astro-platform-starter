@@ -64,7 +64,10 @@ export async function GET() {
 
   const filename = `hjemtrygg-beredskapsplan-${new Date().toISOString().slice(0, 10)}.pdf`;
 
-  return new NextResponse(new Blob([buffer], { type: "application/pdf" }), {
+  const uint8Array = new Uint8Array(buffer);
+  const blob = new Blob([uint8Array], { type: "application/pdf" });
+
+  return new NextResponse(blob, {
     status: 200,
     headers: {
       "Content-Type": "application/pdf",
