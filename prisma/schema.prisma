@@ -42,6 +42,7 @@ model Subscription {
   plan                   String    @default("demo")
   chatMessagesThisMonth  Int       @default(0)
   chatMonthResetAt       DateTime  @default(now())
+  templatesUsed          Int       @default(0)
   createdAt              DateTime  @default(now())
   updatedAt              DateTime  @updatedAt
 
