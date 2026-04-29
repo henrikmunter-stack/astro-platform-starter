@@ -79,7 +79,7 @@ export default function FamilieplanPage() {
   };
 
   const deleteMeetingPoint = async (id: string) => {
-    if (!confirm("Slett dette m\xF8tepunktet?")) return;
+    if (!confirm("Slett dette møtepunktet?")) return;
     await fetch(`/api/family?id=${id}&type=meetingpoint`, { method: "DELETE" });
     setMeetingPoints((prev) => prev.filter((m) => m.id !== id));
   };
@@ -88,11 +88,11 @@ export default function FamilieplanPage() {
     <div>
       <div className="mb-6">
         <h1 className="text-2xl font-semibold text-[#1C2833]">Familieplan</h1>
-        <p className="text-[#5d6b7a] text-sm mt-1">Kontakter og m\xF8tepunkter for din families beredskapsplan.</p>
+        <p className="text-[#5d6b7a] text-sm mt-1">Kontakter og møtepunkter for din families beredskapsplan.</p>
       </div>
 
       <div className="flex gap-1 mb-6 bg-white rounded-lg border border-[#e5e9ec] p-1 w-fit">
-        {[{ key: "contacts", label: `Kontakter (${contacts.length})` }, { key: "meeting", label: `M\xF8tepunkter (${meetingPoints.length})` }].map(({ key, label }) => (
+        {[{ key: "contacts", label: `Kontakter (${contacts.length})` }, { key: "meeting", label: `Møtepunkter (${meetingPoints.length})` }].map(({ key, label }) => (
           <button
             key={key}
             onClick={() => setActiveTab(key as "contacts" | "meeting")}
@@ -148,7 +148,7 @@ export default function FamilieplanPage() {
 
           {loading ? <p className="text-[#5d6b7a] text-center py-8">Laster...</p> : contacts.length === 0 ? (
             <div className="text-center py-12 bg-white rounded-lg border border-[#e5e9ec]">
-              <p className="font-medium text-[#1C2833]">Ingen kontakter enn\xE5</p>
+              <p className="font-medium text-[#1C2833]">Ingen kontakter ennå</p>
               <p className="text-[#5d6b7a] text-sm">Legg til familiemedlemmer, naboer og andre viktige kontakter.</p>
             </div>
           ) : (
@@ -193,7 +193,7 @@ export default function FamilieplanPage() {
               className="flex items-center gap-2 bg-[#1B4F72] text-white text-sm font-semibold px-4 py-2 rounded-md hover:bg-[#16405e] transition-colors"
             >
               <Plus size={16} aria-hidden="true" />
-              Legg til m\xF8tepunkt
+              Legg til møtepunkt
             </button>
           </div>
 
@@ -209,10 +209,10 @@ export default function FamilieplanPage() {
                   <input value={meetingForm.address} onChange={(e) => setMeetingForm({ ...meetingForm, address: e.target.value })} className="w-full h-10 px-3 rounded-md border border-[#e5e9ec] text-sm focus:outline-none focus:ring-2 focus:ring-[#1B4F72]" placeholder="Gateadresse" />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-[#1C2833] mb-1">Prioritet (1 = h\xF8yest)</label>
+                  <label className="block text-sm font-medium text-[#1C2833] mb-1">Prioritet (1 = høyest)</label>
                   <select value={meetingForm.priority} onChange={(e) => setMeetingForm({ ...meetingForm, priority: e.target.value })} className="w-full h-10 px-3 rounded-md border border-[#e5e9ec] text-sm focus:outline-none focus:ring-2 focus:ring-[#1B4F72] bg-white">
-                    <option value="1">1 – H\xF8yeste prioritet</option>
-                    <option value="2">2 – Alternativt m\xF8tepunkt</option>
+                    <option value="1">1 – Høyeste prioritet</option>
+                    <option value="2">2 – Alternativt møtepunkt</option>
                     <option value="3">3 – Reserve</option>
                   </select>
                 </div>
@@ -226,8 +226,8 @@ export default function FamilieplanPage() {
 
           {meetingPoints.length === 0 ? (
             <div className="text-center py-12 bg-white rounded-lg border border-[#e5e9ec]">
-              <p className="font-medium text-[#1C2833]">Ingen m\xF8tepunkter enn\xE5</p>
-              <p className="text-[#5d6b7a] text-sm">DSB anbefaler \xE5 ha minst to avtalte m\xF8tepunkter.</p>
+              <p className="font-medium text-[#1C2833]">Ingen møtepunkter ennå</p>
+              <p className="text-[#5d6b7a] text-sm">DSB anbefaler å ha minst to avtalte møtepunkter.</p>
             </div>
           ) : (
             <div className="space-y-4">
@@ -248,7 +248,7 @@ export default function FamilieplanPage() {
                       {mp.description && <p className="text-sm text-[#5d6b7a] mt-1">{mp.description}</p>}
                     </div>
                   </div>
-                  <button onClick={() => deleteMeetingPoint(mp.id)} className="p-1 text-[#5d6b7a] hover:text-[#C0392B] rounded flex-shrink-0" aria-label={`Slett m\xF8tepunkt: ${mp.name}`}>
+                  <button onClick={() => deleteMeetingPoint(mp.id)} className="p-1 text-[#5d6b7a] hover:text-[#C0392B] rounded flex-shrink-0" aria-label={`Slett møtepunkt: ${mp.name}`}>
                     <Trash2 size={14} aria-hidden="true" />
                   </button>
                 </div>

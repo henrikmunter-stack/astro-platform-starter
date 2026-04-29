@@ -68,8 +68,8 @@ export default function DokumenterPage() {
         <div>
           <p className="text-sm font-medium text-[#1C2833]">Dokumentlagring krever oppsett</p>
           <p className="text-sm text-[#5d6b7a]">
-            For faktisk filopplasting m\xE5 du konfigurere en lagringstjeneste (Supabase Storage eller AWS S3)
-            via milj\xF8variablene STORAGE_PROVIDER, STORAGE_BUCKET og STORAGE_URL.
+            For faktisk filopplasting må du konfigurere en lagringstjeneste (Supabase Storage eller AWS S3)
+            via miljøvariablene STORAGE_PROVIDER, STORAGE_BUCKET og STORAGE_URL.
             Metadata lagres allerede i databasen.
           </p>
         </div>
@@ -105,7 +105,7 @@ export default function DokumenterPage() {
       ) : documents.length === 0 ? (
         <div className="text-center py-12 bg-white rounded-lg border border-[#e5e9ec]">
           <FileText size={32} className="text-[#e5e9ec] mx-auto mb-2" aria-hidden="true" />
-          <p className="font-medium text-[#1C2833]">Ingen dokumenter enn\xE5</p>
+          <p className="font-medium text-[#1C2833]">Ingen dokumenter ennå</p>
           <p className="text-[#5d6b7a] text-sm">Legg til pass, forsikringer og andre viktige dokumenter.</p>
         </div>
       ) : (

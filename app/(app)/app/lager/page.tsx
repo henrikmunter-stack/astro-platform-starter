@@ -101,7 +101,7 @@ export default function LagerPage() {
         <div className="bg-[#C0392B]/10 border border-[#C0392B]/30 rounded-lg p-4 mb-5 flex items-start gap-3">
           <AlertTriangle size={16} className="text-[#C0392B] mt-0.5 flex-shrink-0" aria-hidden="true" />
           <p className="text-sm text-[#1C2833]">
-            <strong>{expiring.length} vare(r)</strong> utl\xF8per innen 30 dager:{" "}
+            <strong>{expiring.length} vare(r)</strong> utløper innen 30 dager:{" "}
             {expiring.map((i) => i.name).join(", ")}
           </p>
         </div>
@@ -160,7 +160,7 @@ export default function LagerPage() {
               </div>
             </div>
             <div>
-              <label htmlFor="item-expires" className="block text-sm font-medium text-[#1C2833] mb-1">Utl\xF8psdato (valgfritt)</label>
+              <label htmlFor="item-expires" className="block text-sm font-medium text-[#1C2833] mb-1">Utløpsdato (valgfritt)</label>
               <input
                 id="item-expires"
                 type="date"
@@ -212,7 +212,7 @@ export default function LagerPage() {
                 <th className="text-left p-4 font-semibold text-[#1C2833]">Navn</th>
                 <th className="text-left p-4 font-semibold text-[#1C2833] hidden sm:table-cell">Kategori</th>
                 <th className="text-left p-4 font-semibold text-[#1C2833]">Mengde</th>
-                <th className="text-left p-4 font-semibold text-[#1C2833] hidden md:table-cell">Utl\xF8psdato</th>
+                <th className="text-left p-4 font-semibold text-[#1C2833] hidden md:table-cell">Utløpsdato</th>
                 <th className="p-4 w-12"></th>
               </tr>
             </thead>
@@ -222,7 +222,7 @@ export default function LagerPage() {
                   <td className="p-4 font-medium text-[#1C2833]">
                     {item.name}
                     {isExpiringSoon(item.expiresAt) && (
-                      <AlertTriangle size={14} className="inline ml-2 text-[#C0392B]" aria-label="Utl\xF8per snart" />
+                      <AlertTriangle size={14} className="inline ml-2 text-[#C0392B]" aria-label="Utløper snart" />
                     )}
                   </td>
                   <td className="p-4 text-[#5d6b7a] hidden sm:table-cell">{CATEGORY_LABELS[item.category] ?? item.category}</td>

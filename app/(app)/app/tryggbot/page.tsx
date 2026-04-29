@@ -43,7 +43,7 @@ export default function TryggBotPage() {
         setLimitReached(true);
         setMessages((prev) => [
           ...prev,
-          { role: "assistant", content: data.error ?? "Kvoten er brukt opp for denne m\xE5neden." },
+          { role: "assistant", content: data.error ?? "Kvoten er brukt opp for denne måneden." },
         ]);
       } else if (res.ok) {
         setMessages((prev) => [...prev, { role: "assistant", content: data.response }]);
@@ -67,7 +67,7 @@ export default function TryggBotPage() {
           Din personlige beredskapsassistent.
           {limit !== null && isFinite(limit) && (
             <span className="ml-2 text-[#5d6b7a]">
-              {used} av {limit} meldinger brukt denne m\xE5neden
+              {used} av {limit} meldinger brukt denne måneden
             </span>
           )}
         </p>
@@ -81,11 +81,11 @@ export default function TryggBotPage() {
             </div>
             <h2 className="font-semibold text-[#1C2833] mb-1">Hei! Jeg er TryggBot</h2>
             <p className="text-[#5d6b7a] text-sm max-w-xs">
-              Jeg kan svare p\xE5 sp\xF8rsm\xE5l om hjemmeberedskap, lagring, familieplan og mye mer.
+              Jeg kan svare på spørsmål om hjemmeberedskap, lagring, familieplan og mye mer.
             </p>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 mt-4 w-full max-w-sm">
               {[
-                "Hva b\xF8r jeg ha i beredskapslageret?",
+                "Hva bør jeg ha i beredskapslageret?",
                 "Hvor mye vann trenger vi for en uke?",
                 "Hvordan lager jeg en familieplan?",
                 "Hva sier DSB om egenberedskap?",
@@ -135,7 +135,7 @@ export default function TryggBotPage() {
         <div className="bg-[#D4AC0D]/10 border border-[#D4AC0D]/30 rounded-lg p-3 mb-3 flex items-center justify-between gap-3">
           <div className="flex items-center gap-2">
             <AlertCircle size={16} className="text-[#D4AC0D] flex-shrink-0" aria-hidden="true" />
-            <p className="text-sm text-[#1C2833]">Du har n\xE5dd meldingskvoten din for denne m\xE5neden.</p>
+            <p className="text-sm text-[#1C2833]">Du har nådd meldingskvoten din for denne måneden.</p>
           </div>
           <Link href="/priser" className="flex-shrink-0 text-xs font-semibold text-white bg-[#1B4F72] px-3 py-1.5 rounded-md hover:bg-[#16405e] transition-colors">
             Oppgrader
@@ -149,7 +149,7 @@ export default function TryggBotPage() {
           value={input}
           onChange={(e) => setInput(e.target.value)}
           onKeyDown={(e) => e.key === "Enter" && !e.shiftKey && sendMessage()}
-          placeholder={limitReached ? "Kvoten er brukt opp..." : "Still et sp\xF8rsm\xE5l om beredskap..."}
+          placeholder={limitReached ? "Kvoten er brukt opp..." : "Still et spørsmål om beredskap..."}
           disabled={loading || limitReached}
           className="flex-1 h-11 px-4 rounded-md border border-[#e5e9ec] text-sm focus:outline-none focus:ring-2 focus:ring-[#1B4F72] disabled:opacity-50 disabled:bg-[#F4F6F7]"
           aria-label="Skriv en melding til TryggBot"
